@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-
+use Illuminate\validation\Rule;
 class ProjectController extends Controller
 {
     /**
@@ -38,7 +38,26 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $data = $request->validate([
+            'title'=> 'required|max:255|min:3',
+            'slug'=> 'required|max:255|',
+            'date'=> 'required|max:20',
+            'url'=> 'required|max:200|url',
+            'description'=> 'nullable|string ',
+        ]);
+        // $data = $request->all();
+
+        $new_project = new Project();
+
+        $new_project->title = $data['title'];
+        $new_project->slug = $data['slug'];
+        $new_project->url = $data['url'];
+        $new_project->date = $data['date'];
+        $new_project->description = $data['description'];
+
+        $new_project->save();
+
+        return to_route('projects.show', $new_project);
     }
 
     /**
@@ -72,7 +91,26 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $data = $request->validate([
+            'title'=> 'required|max:255|min:3',
+            'slug'=> 'required|max:255|',
+            'date'=> 'required|max:20',
+            'url'=> 'required|max:200|url',
+            'description'=> 'nullable|string ',
+        ]);
+        // $data = $request->all();
+
+        $new_project = new Project();
+
+        $new_project->title = $data['title'];
+        $new_project->slug = $data['slug'];
+        $new_project->url = $data['url'];
+        $new_project->date = $data['date'];
+        $new_project->description = $data['description'];
+
+        $new_project->save();
+
+        return to_route('projects.show', $new_project);
     }
 
     /**
