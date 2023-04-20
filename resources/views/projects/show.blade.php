@@ -6,11 +6,11 @@
 <div class="container">
     <div class="d-flex">
         <div >
-            <h1>{{$project->title}}</h1>
-            <p>{{$project->slug}}</p>
-            <p>{{$project->description}}</p>
-            <p>{{$project->date}}</p>
-            <p>{{$project->url}}</p>
+            <h1 class="title">{{$project->title}}</h1>
+            <p class="slug">{{$project->slug}}</p>
+            <p class="description">{{$project->description}}</p>
+            <p class="date">{{$project->date}}</p>
+            <p class="url">{{$project->url}}</p>
             
         </div>
         <div>
