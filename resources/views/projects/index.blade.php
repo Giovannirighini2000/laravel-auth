@@ -33,7 +33,7 @@
                         <td>{{$project->date}}</td>
                         <td>{{$project->url}}</td>
                         <td>
-                            <a class="btn" href="{{route('projects.edit',$project)}}">MODIFICA</a>
+                            <a class="btn " href="{{route('projects.edit',$project)}}">MODIFICA</a>
                         </td>
                     </tr>
                     @empty 
