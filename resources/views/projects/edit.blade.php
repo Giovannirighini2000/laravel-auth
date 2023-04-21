@@ -14,29 +14,55 @@
     
           <div class="mb-3">
             <label for="title" class="form-label">Titolo</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ old('title',$project->title) }}">
+            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title',$project->title) }}">
+            @error('title')
+              <div class="invalid-feedback">
+                  {{ $message }}
+              </div>
+            @enderror
           </div>
   
           <div class="mb-3">
               <label for="slug" class="form-label">slug</label>
-              <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug',$project->slug) }}">
+              <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{ old('slug',$project->slug) }}">
+              @error('slug')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+              @enderror
           </div>
     
           <div class="mb-3">
             <label for="description" class="form-label">description</label>
-            <input type="text" class="form-control" id="description" name="description" value="{{ old('description',$project->description) }}">
+            <input type="text" class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ old('description',$project->description) }}">
+            @error('description')
+              <div class="invalid-feedback">
+                  {{ $message }}
+              </div>
+            @enderror
+            
           </div>
     
           
     
           <div class="mb-3">
             <label for="date" class="form-label">date </label>
-            <input type="text" class="form-control" id="date" name="date" value="{{ old('date',$project->date) }}">
+            <input type="text" class="form-control @error('date') is-invalid @enderror" id="date" name="date" value="{{ old('date',$project->date) }}">
+            @error('date')
+              <div class="invalid-feedback">
+                  {{ $message }}
+              </div>
+            @enderror
           </div>
     
           <div class="mb-3">
             <label for="url" class="form-label">url project</label>
-            <input type="text" class="form-control" id="url" name="url" value="{{ old('url',$project->url) }}">
+            <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url" value="{{ old('url',$project->url) }}">
+            @error('url')
+              <div class="invalid-feedback">
+                  {{ $message }}
+              </div>
+            @enderror
           </div>
     
         </div>

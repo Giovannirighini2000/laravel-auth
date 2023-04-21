@@ -21,6 +21,7 @@
                         <th>DESCRIZIONE</th>
                         <th>DATE</th>
                         <th>URL</th>
+                        <th>DATA ELIMINAZIONE</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +34,27 @@
                         <td>{{$project->date}}</td>
                         <td>{{$project->url}}</td>
                         <td>
+                            {{ $project->trashed() ? $project->deleted_at : '' }}
+                        </td>
+                        <td>
                             <a class="btn " href="{{route('projects.edit',$project)}}">MODIFICA</a>
+                            
+                        </td>
+                        <td>
+                            <form action="{{ route('projects.destroy', $project) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input class="btn" type="submit" value="ELIMINA">
+                            </form>
+                            
+                        </td>
+                        <td>
+                            @if($project->trashed())
+                                <form action="{{ route('projects.restore',$project) }}" method="POST">
+                                    @csrf
+                                    <input class="btn btn-sm btn-success" type="submit" value="Ripristina">
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @empty 

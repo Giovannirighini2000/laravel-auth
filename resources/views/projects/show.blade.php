@@ -15,6 +15,12 @@
         </div>
         <div>
             <a class="btn" href="{{route('projects.edit',$project)}}">MODIFICA</a>
+            @if($project->trashed())
+                    <form action="{{ route('projects.restore',$project) }}" method="POST">
+                        @csrf
+                        <input class="btn btn-sm btn-success" type="submit" value="Ripristina">
+                    </form>
+                @endif
         </div>
 
     </div>

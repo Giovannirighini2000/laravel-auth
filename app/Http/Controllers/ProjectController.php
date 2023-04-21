@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\validation\Rule;
+use Illuminate\Support\Str;
 class ProjectController extends Controller
 {
     /**
@@ -15,7 +16,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects =  Project::withTrashed()->get();
 
         return view('projects.index', compact('projects'));
     }
@@ -38,26 +39,14 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $data = $request->validate([
-            'title'=> 'required|max:255|min:3',
-            'slug'=> 'required|max:255|',
-            'date'=> 'required|max:20',
-            'url'=> 'required|max:200|url',
-            'description'=> 'nullable|string ',
-        ]);
-        // $data = $request->all();
 
-        $new_project = new Project();
+        $data = $request->validated();
 
-        $new_project->title = $data['title'];
-        $new_project->slug = $data['slug'];
-        $new_project->url = $data['url'];
-        $new_project->date = $data['date'];
-        $new_project->description = $data['description'];
+        $data['slug'] = Str::slug($data['title']);
 
-        $new_project->save();
+        $project = Project::create($data);
 
-        return to_route('projects.show', $new_project);
+        return to_route('projects.show', $project);
     }
 
     /**
@@ -91,26 +80,25 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $data = $request->validate([
-            'title'=> 'required|max:255|min:3',
-            'slug'=> 'required|max:255|',
-            'date'=> 'required|max:20',
-            'url'=> 'required|max:200|url',
-            'description'=> 'nullable|string ',
-        ]);
-        // $data = $request->all();
+        $data = $request->validated();
 
-        $new_project = new Project();
+        if ($data['title'] !== $project->title) {
+            $data['slug'] = Str::slug($data['title']);
+        }
 
-        $new_project->title = $data['title'];
-        $new_project->slug = $data['slug'];
-        $new_project->url = $data['url'];
-        $new_project->date = $data['date'];
-        $new_project->description = $data['description'];
+        $project->update($data);
 
-        $new_project->save();
+        return to_route('projects.show', $project);
+    }
 
-        return to_route('projects.show', $new_project);
+    public function restore(Project $project)
+    {
+
+        if ($project->trashed()) {
+            $project->restore();
+        }
+
+        return back();
     }
 
     /**
@@ -121,7 +109,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
+        if ($project->trashed()) {
+            $project->forceDelete(); 
+        } else {
+            $project->delete(); 
+        }
+
         return to_route('projects.index');
     }
 }
